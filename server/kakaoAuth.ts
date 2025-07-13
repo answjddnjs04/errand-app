@@ -37,6 +37,11 @@ export async function setupAuth(app: Express) {
   const kakaoClientID = process.env.KAKAO_REST_API_KEY || "efd6227a29decd6d0ca51bfffeae124e";
   const kakaoClientSecret = process.env.KAKAO_CLIENT_SECRET || "BUlf3NldM43EU3fryYdZ28AsJsmrbGth";
   
+  console.log("Kakao Strategy 설정:");
+  console.log("- Client ID:", kakaoClientID);
+  console.log("- Client Secret:", kakaoClientSecret ? "설정됨" : "설정안됨");
+  console.log("- Callback URL: /api/auth/kakao/callback");
+  
   passport.use(new KakaoStrategy({
     clientID: kakaoClientID,
     clientSecret: kakaoClientSecret,
@@ -81,18 +86,39 @@ export async function setupAuth(app: Express) {
   });
 
   // 카카오 로그인 라우트
-  app.get("/api/login", passport.authenticate("kakao"));
+  app.get("/api/login", (req, res, next) => {
+    console.log("카카오 로그인 요청 시작");
+    console.log("Request URL:", req.url);
+    console.log("Request hostname:", req.hostname);
+    passport.authenticate("kakao")(req, res, next);
+  });
 
   // 카카오 콜백 라우트
   app.get("/api/auth/kakao/callback", 
+    (req, res, next) => {
+      console.log("카카오 콜백 요청 받음");
+      console.log("Query params:", req.query);
+      next();
+    },
     passport.authenticate("kakao", { 
-      failureRedirect: "/login-failed" 
+      failureRedirect: "/login-failed",
+      successRedirect: "/",
+      failureFlash: false
     }),
     (req, res) => {
-      // 로그인 성공 시 홈으로 리디렉션
+      console.log("카카오 로그인 성공");
       res.redirect("/");
     }
   );
+
+  // 로그인 실패 페이지
+  app.get("/login-failed", (req, res) => {
+    console.log("카카오 로그인 실패");
+    res.status(401).json({ 
+      error: "카카오 로그인에 실패했습니다.",
+      message: "다시 시도해주세요."
+    });
+  });
 
   // 로그아웃 라우트
   app.get("/api/logout", (req, res) => {
