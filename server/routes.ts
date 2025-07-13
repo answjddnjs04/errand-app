@@ -2,8 +2,10 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
-import { insertErrandSchema, insertChatMessageSchema } from "@shared/schema";
+import { insertErrandSchema, insertChatMessageSchema, users } from "@shared/schema";
 import { z } from "zod";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -182,11 +184,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "User not found" });
       }
       
-      const updatedUser = await storage.upsertUser({
-        ...user,
-        location: location || user.location,
-        maxDistance: maxDistance || user.maxDistance,
-      });
+      // Update user location and maxDistance in the database directly
+      const [updatedUser] = await db
+        .update(users)
+        .set({
+          location: location || user.location,
+          maxDistance: maxDistance || user.maxDistance,
+          updatedAt: new Date(),
+        })
+        .where(eq(users.id, userId))
+        .returning();
       
       res.json(updatedUser);
     } catch (error) {
