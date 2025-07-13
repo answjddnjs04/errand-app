@@ -6,7 +6,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <div className="bg-primary-orange text-white py-12 px-4">
+      <div className="bg-primary text-white py-12 px-4">
         <div className="max-w-md mx-auto text-center">
           <div className="flex items-center justify-center mb-4">
             <MapPin className="h-12 w-12" />
@@ -88,7 +88,7 @@ export default function Landing() {
         <div className="max-w-md mx-auto">
           <Button 
             onClick={() => window.location.href = "/api/login"}
-            className="w-full py-4 text-lg font-semibold bg-primary-orange hover:bg-primary-dark"
+            className="w-full py-4 text-lg font-semibold bg-primary hover:bg-primary/90"
           >
             로그인하고 시작하기
           </Button>

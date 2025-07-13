@@ -136,7 +136,7 @@ export default function ErrandCard({ errand, showStatus = false }: ErrandCardPro
             <Button
               onClick={handleAccept}
               disabled={acceptErrandMutation.isPending}
-              className="w-full bg-primary-orange hover:bg-primary-dark"
+              className="w-full bg-primary hover:bg-primary/90"
             >
               {acceptErrandMutation.isPending ? "수락 중..." : "이 심부름 하기"}
             </Button>

@@ -13,7 +13,7 @@
   --card-foreground: hsl(20, 14.3%, 4.1%);
   --border: hsl(20, 5.9%, 90%);
   --input: hsl(20, 5.9%, 90%);
-  --primary: hsl(17, 100%, 60%);
+  --primary: hsl(220, 100%, 60%);
   --primary-foreground: hsl(0, 0%, 100%);
   --secondary: hsl(60, 4.8%, 95.9%);
   --secondary-foreground: hsl(24, 9.8%, 10%);
@@ -21,12 +21,12 @@
   --accent-foreground: hsl(24, 9.8%, 10%);
   --destructive: hsl(0, 84.2%, 60.2%);
   --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(20, 14.3%, 4.1%);
+  --ring: hsl(220, 100%, 60%);
   --radius: 0.5rem;
   
   /* App specific colors */
-  --primary-light: hsl(24, 100%, 72%);
-  --primary-dark: hsl(14, 85%, 52%);
+  --primary-light: hsl(225, 100%, 70%);
+  --primary-dark: hsl(215, 100%, 50%);
   --success: hsl(142, 76%, 36%);
   --warning: hsl(47, 96%, 53%);
   --danger: hsl(0, 84%, 60%);
@@ -49,7 +49,7 @@
   --card-foreground: hsl(0, 0%, 98%);
   --border: hsl(240, 3.7%, 15.9%);
   --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(17, 100%, 60%);
+  --primary: hsl(220, 100%, 60%);
   --primary-foreground: hsl(0, 0%, 100%);
   --secondary: hsl(240, 3.7%, 15.9%);
   --secondary-foreground: hsl(0, 0%, 98%);
@@ -97,19 +97,19 @@
     @apply bg-red-100 text-red-700;
   }
 
-  .primary-orange {
-    color: hsl(17, 100%, 60%);
+  .primary-blue {
+    color: hsl(220, 100%, 60%);
   }
 
-  .bg-primary-orange {
-    background-color: hsl(17, 100%, 60%);
+  .bg-primary-blue {
+    background-color: hsl(220, 100%, 60%);
   }
 
   .bg-primary-light {
-    background-color: hsl(24, 100%, 72%);
+    background-color: hsl(225, 100%, 70%);
   }
 
   .bg-primary-dark {
-    background-color: hsl(14, 85%, 52%);
+    background-color: hsl(215, 100%, 50%);
   }
 }

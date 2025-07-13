@@ -184,7 +184,7 @@ export default function Profile() {
                 <Button
                   onClick={handleSave}
                   disabled={updateProfileMutation.isPending}
-                  className="flex-1 bg-primary-orange hover:bg-primary-dark"
+                  className="flex-1 bg-primary hover:bg-primary/90"
                 >
                   {updateProfileMutation.isPending ? "저장 중..." : "저장"}
                 </Button>

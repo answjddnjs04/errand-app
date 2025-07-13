@@ -208,7 +208,7 @@ export default function CreateErrandModal({ isOpen, onClose }: CreateErrandModal
           <Button
             type="submit"
             disabled={createErrandMutation.isPending}
-            className="w-full py-4 bg-primary-orange hover:bg-primary-dark font-semibold"
+            className="w-full py-4 bg-primary hover:bg-primary/90 font-semibold"
           >
             {createErrandMutation.isPending ? "등록 중..." : "심부름 등록하기"}
           </Button>

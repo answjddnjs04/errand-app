@@ -48,7 +48,7 @@ export default function Home() {
                 size="sm"
                 className={`flex-shrink-0 rounded-full text-sm font-medium ${
                   activeFilter === filter.key 
-                    ? "bg-primary-orange hover:bg-primary-dark text-white" 
+                    ? "bg-primary hover:bg-primary/90 text-white" 
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
                 onClick={() => setActiveFilter(filter.key)}
@@ -81,7 +81,7 @@ export default function Home() {
               <p className="text-gray-500 mb-4">아직 등록된 심부름이 없어요</p>
               <Button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="bg-primary-orange hover:bg-primary-dark"
+                className="bg-primary hover:bg-primary/90"
               >
                 첫 심부름 등록하기
               </Button>

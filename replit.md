@@ -7,6 +7,7 @@ This is a full-stack community errand matching service called "우리동네 심�
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Brand color preference: Blue theme instead of orange to differentiate from Carrot Market.
 
 ## System Architecture
 
