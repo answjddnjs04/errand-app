@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, MessageSquare, Star, Users } from "lucide-react";
+import { SiKakaotalk } from "react-icons/si";
 
 export default function Landing() {
   return (
@@ -88,9 +89,10 @@ export default function Landing() {
         <div className="max-w-md mx-auto">
           <Button 
             onClick={() => window.location.href = "/api/login"}
-            className="w-full py-4 text-lg font-semibold bg-primary hover:bg-primary/90"
+            className="w-full py-4 text-lg font-semibold bg-primary hover:bg-primary/90 flex items-center justify-center gap-2"
           >
-            로그인하고 시작하기
+            <SiKakaotalk className="h-5 w-5" />
+            카카오로 시작하기
           </Button>
           <p className="text-center text-sm text-gray-500 mt-4">
             Replit 계정으로 간편하게 로그인
