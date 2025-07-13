@@ -47,9 +47,10 @@ The application uses a modern full-stack TypeScript architecture with a clear se
 - **Sessions**: Secure session storage for authentication
 
 ### Authentication System
-- Replit Auth integration with OpenID Connect
-- Session-based authentication with secure cookie storage
+- KakaoTalk social login integration with passport-kakao
+- Session-based authentication with PostgreSQL session storage  
 - User profile management with location preferences
+- Secure OAuth flow with proper error handling
 
 ### Errand Management
 - Three urgency levels: normal (gray), urgent (green), super-urgent (red)
@@ -85,7 +86,7 @@ The application uses a modern full-stack TypeScript architecture with a clear se
 - **@replit/vite-plugin-runtime-error-modal**: Development error handling
 
 ### Authentication
-- **openid-client**: OpenID Connect implementation
+- **passport-kakao**: KakaoTalk social login integration
 - **passport**: Authentication middleware
 - **express-session**: Session management
 - **connect-pg-simple**: PostgreSQL session store
