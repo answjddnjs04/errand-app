@@ -45,9 +45,15 @@ export async function setupAuth(app: Express) {
   passport.use(new KakaoStrategy({
     clientID: kakaoClientID,
     clientSecret: kakaoClientSecret,
-    callbackURL: "/api/auth/kakao/callback"
+    callbackURL: "/api/auth/kakao/callback",
+    scope: ['profile_nickname', 'account_email']
   }, async (accessToken: string, refreshToken: string, profile: any, done: any) => {
     try {
+      console.log("카카오 인증 성공!");
+      console.log("Access Token:", accessToken ? "있음" : "없음");
+      console.log("Profile ID:", profile.id);
+      console.log("Profile Data:", JSON.stringify(profile._json, null, 2));
+      
       // 카카오 프로필에서 사용자 정보 추출
       const kakaoProfile = profile._json;
       const userInfo = {
@@ -58,8 +64,11 @@ export async function setupAuth(app: Express) {
         profileImageUrl: kakaoProfile.properties?.profile_image || null,
       };
 
+      console.log("추출된 사용자 정보:", userInfo);
+
       // 사용자 정보를 데이터베이스에 저장/업데이트
       const user = await storage.upsertUser(userInfo);
+      console.log("DB 저장 완료:", user);
       
       return done(null, user);
     } catch (error) {
@@ -90,7 +99,11 @@ export async function setupAuth(app: Express) {
     console.log("카카오 로그인 요청 시작");
     console.log("Request URL:", req.url);
     console.log("Request hostname:", req.hostname);
-    passport.authenticate("kakao")(req, res, next);
+    console.log("Full URL:", `${req.protocol}://${req.get('host')}${req.originalUrl}`);
+    
+    passport.authenticate("kakao", {
+      scope: ['profile_nickname', 'account_email']
+    })(req, res, next);
   });
 
   // 카카오 콜백 라우트
