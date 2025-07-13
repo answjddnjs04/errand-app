@@ -46,7 +46,7 @@ export async function setupAuth(app: Express) {
     clientID: kakaoClientID,
     clientSecret: kakaoClientSecret,
     callbackURL: "/api/auth/kakao/callback",
-    scope: ['profile_nickname', 'account_email']
+    scope: ['profile_nickname']
   }, async (accessToken: string, refreshToken: string, profile: any, done: any) => {
     try {
       console.log("카카오 인증 성공!");
@@ -103,7 +103,7 @@ export async function setupAuth(app: Express) {
     console.log("User-Agent:", req.get('User-Agent'));
     
     passport.authenticate("kakao", {
-      scope: ['profile_nickname', 'account_email'],
+      scope: ['profile_nickname'],
       failureMessage: true
     })(req, res, next);
   });
