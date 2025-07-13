@@ -96,30 +96,36 @@ export async function setupAuth(app: Express) {
 
   // 카카오 로그인 라우트
   app.get("/api/login", (req, res, next) => {
-    console.log("카카오 로그인 요청 시작");
+    console.log("=== 카카오 로그인 요청 시작 ===");
     console.log("Request URL:", req.url);
     console.log("Request hostname:", req.hostname);
     console.log("Full URL:", `${req.protocol}://${req.get('host')}${req.originalUrl}`);
+    console.log("User-Agent:", req.get('User-Agent'));
     
     passport.authenticate("kakao", {
-      scope: ['profile_nickname', 'account_email']
+      scope: ['profile_nickname', 'account_email'],
+      failureMessage: true
     })(req, res, next);
   });
 
   // 카카오 콜백 라우트
   app.get("/api/auth/kakao/callback", 
     (req, res, next) => {
-      console.log("카카오 콜백 요청 받음");
+      console.log("=== 카카오 콜백 요청 받음 ===");
       console.log("Query params:", req.query);
+      console.log("Headers:", req.headers);
+      if (req.query.error) {
+        console.error("카카오 OAuth 오류:", req.query.error);
+        console.error("오류 설명:", req.query.error_description);
+      }
       next();
     },
     passport.authenticate("kakao", { 
       failureRedirect: "/login-failed",
-      successRedirect: "/",
       failureFlash: false
     }),
     (req, res) => {
-      console.log("카카오 로그인 성공");
+      console.log("=== 카카오 로그인 최종 성공 ===");
       res.redirect("/");
     }
   );
