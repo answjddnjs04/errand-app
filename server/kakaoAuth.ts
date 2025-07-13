@@ -227,7 +227,40 @@ export async function setupAuth(app: Express) {
     res.json({ 
       message: "테스트 콜백 성공", 
       query: req.query,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      url: req.url,
+      headers: req.headers
+    });
+  });
+
+  // 카카오 로그인 프로세스 직접 처리 테스트
+  app.get("/api/kakao-direct", (req, res) => {
+    const { code, error, error_description } = req.query;
+    
+    console.log("=== 카카오 직접 처리 테스트 ===");
+    console.log("Code:", code);
+    console.log("Error:", error);
+    console.log("Error Description:", error_description);
+    
+    if (error) {
+      return res.json({
+        success: false,
+        error: error,
+        error_description: error_description
+      });
+    }
+    
+    if (code) {
+      return res.json({
+        success: true,
+        message: "인증 코드 받음",
+        code: code
+      });
+    }
+    
+    res.json({
+      message: "파라미터 없음",
+      query: req.query
     });
   });
 
