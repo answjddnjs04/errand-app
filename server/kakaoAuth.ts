@@ -202,6 +202,35 @@ export async function setupAuth(app: Express) {
     res.redirect(kakaoUrl);
   });
 
+  // 콜백 디버깅을 위한 추가 라우트
+  app.all("/api/auth/kakao/*", (req, res, next) => {
+    console.log("=== 카카오 관련 요청 감지 ===");
+    console.log("Method:", req.method);
+    console.log("URL:", req.url);
+    console.log("Path:", req.path);
+    console.log("Query:", req.query);
+    next();
+  });
+
+  // 모든 카카오 관련 경로 로깅
+  app.use((req, res, next) => {
+    if (req.url.includes('kakao')) {
+      console.log(`🔍 카카오 관련 요청: ${req.method} ${req.url}`);
+    }
+    next();
+  });
+
+  // 간단한 콜백 테스트
+  app.get("/api/auth/kakao/test", (req, res) => {
+    console.log("=== 테스트 콜백 도달 ===");
+    console.log("Query:", req.query);
+    res.json({ 
+      message: "테스트 콜백 성공", 
+      query: req.query,
+      timestamp: new Date().toISOString()
+    });
+  });
+
   // 로그아웃 라우트
   app.get("/api/logout", (req, res) => {
     req.logout((err) => {
