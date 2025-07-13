@@ -77,12 +77,19 @@ export async function setupAuth(app: Express) {
       
       // 카카오 프로필에서 사용자 정보 추출
       const kakaoProfile = profile._json;
+      const nickname = kakaoProfile.properties?.nickname || 
+                      kakaoProfile.kakao_account?.profile?.nickname || 
+                      "사용자";
+      const profileImage = kakaoProfile.properties?.profile_image || 
+                          kakaoProfile.kakao_account?.profile?.profile_image_url || 
+                          null;
+      
       const userInfo = {
         id: profile.id.toString(),
         email: kakaoProfile.kakao_account?.email || null,
-        firstName: kakaoProfile.properties?.nickname || null,
+        firstName: nickname,
         lastName: null,
-        profileImageUrl: kakaoProfile.properties?.profile_image || null,
+        profileImageUrl: profileImage,
       };
 
       console.log("추출된 사용자 정보:", userInfo);
