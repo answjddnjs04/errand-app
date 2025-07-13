@@ -234,13 +234,14 @@ export async function setupAuth(app: Express) {
   });
 
   // 카카오 로그인 프로세스 직접 처리 테스트
-  app.get("/api/kakao-direct", (req, res) => {
+  app.get("/api/kakao-direct", async (req, res) => {
     const { code, error, error_description } = req.query;
     
     console.log("=== 카카오 직접 처리 테스트 ===");
     console.log("Code:", code);
     console.log("Error:", error);
     console.log("Error Description:", error_description);
+    console.log("Full Query:", req.query);
     
     if (error) {
       return res.json({
@@ -251,11 +252,57 @@ export async function setupAuth(app: Express) {
     }
     
     if (code) {
-      return res.json({
-        success: true,
-        message: "인증 코드 받음",
-        code: code
-      });
+      try {
+        // 토큰 요청
+        const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            grant_type: 'authorization_code',
+            client_id: kakaoClientID,
+            client_secret: kakaoClientSecret,
+            redirect_uri: `${req.protocol}://${req.get('host')}/api/kakao-direct`,
+            code: code as string,
+          }),
+        });
+        
+        const tokenData = await tokenResponse.json();
+        console.log("토큰 응답:", tokenData);
+        
+        if (tokenData.access_token) {
+          // 사용자 정보 요청
+          const userResponse = await fetch('https://kapi.kakao.com/v2/user/me', {
+            headers: {
+              'Authorization': `Bearer ${tokenData.access_token}`,
+            },
+          });
+          
+          const userData = await userResponse.json();
+          console.log("사용자 정보:", userData);
+          
+          return res.json({
+            success: true,
+            message: "카카오 로그인 성공!",
+            user: userData,
+            token: tokenData
+          });
+        } else {
+          return res.json({
+            success: false,
+            message: "토큰 획득 실패",
+            tokenData: tokenData
+          });
+        }
+      } catch (error) {
+        console.error("카카오 API 오류:", error);
+        return res.json({
+          success: false,
+          message: "API 호출 오류",
+          error: error.message
+        });
+      }
     }
     
     res.json({
